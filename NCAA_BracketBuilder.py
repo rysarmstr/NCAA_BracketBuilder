@@ -6,8 +6,9 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-## Choose men or women ( 'M' for men, 'W' for women)
-mw = 'M'
+## Choose men or women ( 'M' for men, 'W' for women) and make sure your submission file name is correct
+mw = 'W'
+submission_file = 'womens_submission.csv' #Type file name here. File should be located in input folder
 
 ##loading function
 @st.cache
@@ -30,7 +31,6 @@ def load_submission(df,slots,seeds,season_info):
     df_rev['ID'] = str(season)+'_'+ df_rev['LeftTeamID'].astype(str)+'_'+df_rev['RightTeamID'].astype(str)
     df = pd.concat([df,df_rev])
 
-
     seeds = seeds.loc[seeds['Season']==season,:].copy()
     seeds.drop(columns='Season',inplace=True)
     seeds['Region'] = seeds['Seed'].str.extract(r'([WXYZ]).*')
@@ -40,6 +40,10 @@ def load_submission(df,slots,seeds,season_info):
     
     oldseeds_dict = seeds.set_index('Seed')['NewSeed'].to_dict()
     seeds_dict = seeds.set_index('NewSeed')['TeamID'].to_dict()
+
+    if mw == 'W': #womens csv does not have a column for season so we will fake it.
+        slots['Season']=season
+    else: pass
     slots = slots.loc[slots['Season']==season,:].copy()
     slots.drop(columns='Season',inplace=True)
     slots['StrongSeed'].replace(oldseeds_dict,inplace=True)
@@ -54,7 +58,7 @@ season_info = pd.read_csv(path/(mw+'Seasons.csv'))
 teams_dict = pd.read_csv(path/(mw+'Teams.csv')).set_index('TeamID')['TeamName'].to_dict() # Create team dictionary to go from team ID to team name
 seeds = pd.read_csv(path/(mw+'NCAATourneySeeds.csv'))
 slots = pd.read_csv(path/(mw+'NCAATourneySlots.csv'))
-submission = pd.read_csv(path/'submission.csv')
+submission = pd.read_csv(path/submission_file)
 
 submission, slots, seeds_dict, season = load_submission(submission,slots,seeds,season_info)
 
