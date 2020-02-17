@@ -37,7 +37,6 @@ def load_submission(df,slots,seeds,season_info):
     seeds['Region'].replace(region_dict,inplace=True)
     seeds['Number'] = seeds['Seed'].str.extract(r'[WXYZ](.*)')
     seeds['NewSeed'] = seeds['Region']+'-'+seeds['Number']
-    st.write(seeds)
     
     oldseeds_dict = seeds.set_index('Seed')['NewSeed'].to_dict()
     seeds_dict = seeds.set_index('NewSeed')['TeamID'].to_dict()
@@ -51,10 +50,10 @@ def load_submission(df,slots,seeds,season_info):
     return df, slots, seeds_dict, season
 
 path = Path('./input/')
-season_info = pd.read_csv(path/+mw+'Seasons.csv')
-teams_dict = pd.read_csv(path/+mw+'Teams.csv').set_index('TeamID')['TeamName'].to_dict() # Create team dictionary to go from team ID to team name
-seeds = pd.read_csv(path/+mw+'NCAATourneySeeds.csv')
-slots = pd.read_csv(path/+mw+'NCAATourneySlots.csv')
+season_info = pd.read_csv(path/(mw+'Seasons.csv'))
+teams_dict = pd.read_csv(path/(mw+'Teams.csv')).set_index('TeamID')['TeamName'].to_dict() # Create team dictionary to go from team ID to team name
+seeds = pd.read_csv(path/(mw+'NCAATourneySeeds.csv'))
+slots = pd.read_csv(path/(mw+'NCAATourneySlots.csv'))
 submission = pd.read_csv(path/'submission.csv')
 
 submission, slots, seeds_dict, season = load_submission(submission,slots,seeds,season_info)
@@ -145,7 +144,7 @@ def update_games(games,round,next_round):
 
     return games
 
-thresh = st.slider(label='Threshold for manual picking',min_value=.5,max_value=1.0,value=.6)
+thresh = st.slider(label='Threshold for manual picking (use 1 to pick all games - less for close games)',min_value=.5,max_value=1.0,value=.6)
 
 st.header('Play-in games')
 games = update_games(games,'R0','R1')

@@ -4,4 +4,4 @@ MNCAATourneySeeds.csv
 MNCAATourneySlots.csv
 MSeasons.csv
 MTeams.csv
-submission.csv
+submission.csv - Kaggle formatted submission file for this year.
