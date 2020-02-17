@@ -7,8 +7,8 @@ import numpy as np
 from pathlib import Path
 
 ## Choose men or women ( 'M' for men, 'W' for women) and make sure your submission file name is correct
-mw = 'W'
-submission_file = 'womens_submission.csv' #Type file name here. File should be located in input folder
+mw = 'M'
+submission_file = 'mens_submission.csv' #Type file name here. File should be located in input folder
 
 ##loading function
 @st.cache
@@ -150,8 +150,10 @@ def update_games(games,round,next_round):
 
 thresh = st.slider(label='Threshold for manual picking (use 1 to pick all games - less for close games)',min_value=.5,max_value=1.0,value=.6)
 
-st.header('Play-in games')
-games = update_games(games,'R0','R1')
+if mw == 'M': # no play-in for the womens tourney
+    st.header('Play-in games')
+    games = update_games(games,'R0','R1')
+else: pass
 
 st.header('Round 1 - Let the madness begin!')
 games = update_games(games,'R1','R2')
@@ -172,11 +174,19 @@ st.header('Round 6 - Championship!')
 games = update_games(games,'R6','')
 
 bracket_odds = int(round(1/np.multiply.reduce(np.array(games['Pred']))))
+bracket_odds_noPI = int(round(1/np.multiply.reduce(np.array(games.loc[games['Round']!= 'R0','Pred']))))
 
-st.write('''
-         According to these probabilities, your odds of a perfect bracket are 1 in **{a:,d}** ...  
-         Yikes! Good luck! :)
-         '''.format(a=bracket_odds))
+if mw=='W':
+    st.write('''
+            According to these probabilities, your odds of a perfect bracket are 1 in **{a:,d}**...  
+            Yikes! Good luck! :)
+            '''.format(a=bracket_odds))
+else:
+    st.write('''
+            According to these probabilities, your odds of a perfect bracket are 1 in **{a:,d}** including
+            the play-in games or **{b:,d}** not including the play-in games...  
+            Yikes! Good luck! :)
+            '''.format(a=bracket_odds,b=bracket_odds_noPI))
 
 
 
