@@ -1,0 +1,7 @@
+Please drop the following Kaggle data files (either men's or women's) into this folder:
+
+MNCAATourneySeeds.csv
+MNCAATourneySlots.csv
+MSeasons.csv
+MTeams.csv
+submission.csv
