@@ -10,6 +10,26 @@ from pathlib import Path
 mw = 'M'
 submission_file = 'mens_submission.csv' #Type file name here. File should be located in input folder
 
+#Info
+'''
+## NCAA Bracket Builder
+This GUI will walk you through the bracket game by game. Perioudically a table will show you your picks (that you can
+eventually export) so that you can make sure things are on track. The slider at the top lets you choose a threshold for
+games that you want to manually edit. If you only want to edit close games, choose something like 0.6 or 0.7. If you want
+all games to be editable choose 1. If you want to change your selection for a game, click the radio button for the team of
+your choice. The result should be reflected in the text below your choice. If not try clicking off and on (and be sure to
+check the table before you export your results).
+
+At the end you will have the option to export your final picks and you will be able to see a quick summary of your bracket
+that you can screenshot for reference - the bracket is also a good way to check that your selections are okay. Unfortunately,
+exporting the bracket requires a standalone installation of Graphvis and isn't an option at this time.
+
+[Streamlit](https://www.streamlit.io/), the tool used to build this allows you to change the settings to 'wide mode' in the
+upper right, which makes the chart more visible. Thanks to Streamlit for building this easy to use tool and all the folks
+at Kaggle for putting on the [Google Cloud & NCAA® ML Competition 2020-NCAAM]
+(https://www.kaggle.com/c/google-cloud-ncaa-march-madness-2020-division-1-mens-tournament)!
+'''
+
 ##loading function
 @st.cache
 def load_submission(df,slots,seeds,season_info):
@@ -155,24 +175,31 @@ if mw == 'M': # no play-in for the womens tourney
     games = update_games(games,'R0','R1')
 else: pass
 
-st.header('Round 1 - Let the madness begin!')
+st.header('Let\'s get started!')
+st.subheader('Round 1 - Let the madness begin!')
 games = update_games(games,'R1','R2')
 
-st.header('Round 2 - Are you worn out yet?')
+st.subheader('Round 2 - Are you worn out yet?')
 games = update_games(games,'R2','R3')
 
-st.header('Round 3 - Sweet 16')
+st.subheader('Round 3 - Sweet 16')
 games = update_games(games,'R3','R4')
 
-st.header('Round 4 - Elite 8')
+st.subheader('Round 4 - Elite 8')
 games = update_games(games,'R4','R5')
 
-st.header('Round 5 - Final 4')
+st.subheader('Round 5 - Final 4')
 games = update_games(games,'R5','R6')
 
-st.header('Round 6 - Championship!')
+st.subheader('Round 6 - Championship!')
+
 games = update_games(games,'R6','')
 
+
+if st.button('Export Picks to .csv'):
+    games.to_csv(Path('./output/My_NCAA_Bracket.csv'))
+
+st.header('Okay... where\'s my final data? Check your bracket below! Keep scrolling...')
 bracket_odds = int(round(1/np.multiply.reduce(np.array(games['Pred']))))
 bracket_odds_noPI = int(round(1/np.multiply.reduce(np.array(games.loc[games['Round']!= 'R0','Pred']))))
 
@@ -188,15 +215,7 @@ else:
             Yikes! Good luck! :)
             '''.format(a=bracket_odds,b=bracket_odds_noPI))
 
-
-
-if st.button('Export Picks to .csv'):
-    games.to_csv(Path('./output/My_NCAA_Bracket.csv'))
-
 ## Quick bracket viz
-
-st.header('**Bracket below! Find \'wide mode\' in the upper right to make bigger**')
-
 graph = graphviz.Digraph(node_attr={'shape': 'rounded','color': 'lightblue2'})
 
 round_dict = {'R0':'R1',
