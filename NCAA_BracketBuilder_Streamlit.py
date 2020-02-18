@@ -6,10 +6,14 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-## Choose men or women ( 'M' for men, 'W' for women) and edit name location of input data from Kaggle
-mw = 'M'
 path = Path('./input/')  #path for data files
-submission_file = path/'mens_submission.csv' 
+
+## please put the name of your submission file here
+submission_file = path/'submission.csv' 
+
+## you can change the other file names here, or just use the Kaggle names and run the dashboard as is.
+mw = (st.radio(label='Men\'s or Women\'s submission?',options=['Men','Women'] ))[0][0]
+
 seasons_file = path/(mw+'Seasons.csv')
 teams_file = path/(mw+'Teams.csv')
 seeds_file = path/(mw+'NCAATourneySeeds.csv')
@@ -19,8 +23,8 @@ slots_file = path/(mw+'NCAATourneySlots.csv')
 #Info
 '''
 ## NCAA Bracket Builder
-Please place your submission file and other data in the input folder with the names described in './input/info.txt' or
-edit the file paths the the necessary data at the tope of the streamlit code.
+Please place your submission file (named: 'submission.csv') and other data in the input folder with the names described in
+'./input/info.txt' or you can go into the code and edit the input file paths at the top of the file.
 
 This GUI will walk you through the bracket game by game. Periodically a table will show you your picks (that you can
 eventually export) so that you can make sure things are on track. The slider at the top lets you choose a threshold for

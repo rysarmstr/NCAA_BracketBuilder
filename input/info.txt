@@ -4,7 +4,7 @@ MNCAATourneySeeds.csv
 MNCAATourneySlots.csv
 MSeasons.csv
 MTeams.csv
-mens_submission.csv - Kaggle formatted submission file for this year. you can rename the file near the top of the code if needed
+submission.csv - Kaggle formatted submission file for this year. you can rename the file near the top of the code if needed
 
 OR
 
@@ -12,7 +12,7 @@ WNCAATourneySeeds.csv
 WNCAATourneySlots.csv
 WSeasons.csv
 WTeams.csv
-womens_submission.csv - Kaggle formatted submission file for this year. you can rename the file near the top of the code if needed
+submission.csv - Kaggle formatted submission file for this year. you can rename the file near the top of the code if needed
 
 
 
