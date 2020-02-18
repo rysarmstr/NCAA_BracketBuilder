@@ -99,6 +99,9 @@ games['StrongID'] = ''
 games['WeakID'] = ''
 games['WinnerID'] = ''
 games.loc[:,'Pred'] = -1.0
+game_cols = games.columns.to_list()
+new_cols = [game_cols[8]]+game_cols[6:8]+game_cols[4:6]+[game_cols[12]]+game_cols[9:12]+game_cols[0:4]
+games = games[new_cols]
 games.sort_values('Round',inplace=True)
 games.reset_index(inplace=True,drop=True)
 
