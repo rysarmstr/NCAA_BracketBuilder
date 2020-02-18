@@ -139,7 +139,6 @@ def update_games(games,round,next_round):
         st.subheader( row['StrongSeed'] +' **' + row['StrongName'] + '** vs ' + 
                  row['WeakSeed'] + ' **' + row['WeakName'] + '**')
         if pred < thresh:
-            st.write( str(winname) + ' predicted to win with a ' + str(np.round(pred*1000)/10) + '% chance')
             overwrite = st.radio(label='Manual pick:',options=[winname,losename])
             if overwrite == losename:
                 winslot = loseslot
@@ -148,7 +147,7 @@ def update_games(games,round,next_round):
                 pred = 1 - pred
             else: pass
 
-
+        st.write( str(winname) + ' predicted to win with a ' + str(np.round(pred*1000)/10) + '% chance')
         st.write('**' + winname + '** advances!')
         games.loc[idx,'WinnerSeed'] = winslot
         games.loc[idx,'WinnerID'] = winID
