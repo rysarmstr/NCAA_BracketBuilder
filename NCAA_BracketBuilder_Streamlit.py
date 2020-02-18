@@ -40,7 +40,6 @@ at Kaggle for putting on the [Google Cloud & NCAA® ML Competition 2020-NCAAM]
 '''
 
 ##loading function
-@st.cache
 def load_submission(df,slots,seeds,season_info):
     df[['Season','LeftTeamID','RightTeamID']] = df['ID'].str.split('_',expand=True)
     df.reset_index(inplace=True, drop=True)
